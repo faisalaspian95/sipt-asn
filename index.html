@@ -1,0 +1,3215 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <base target="_top">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100%;
+      font-family: Arial, sans-serif;
+      background: #f5f7fb;
+      color: #172033;
+    }
+
+
+    /* =========================================
+       APP LAYOUT
+    ========================================= */
+
+    .app {
+      display: flex;
+      min-height: 100vh;
+    }
+
+
+    /* =========================================
+       SIDEBAR
+    ========================================= */
+
+    .sidebar {
+      width: 250px;
+      min-width: 250px;
+
+      background: #172033;
+      color: white;
+
+      min-height: 100vh;
+
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+
+      z-index: 1000;
+
+      display: flex;
+      flex-direction: column;
+    }
+
+
+    .brand {
+      padding: 18px 16px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      text-align: center;
+    }
+
+    .brand-logo-wrap {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .logo-drive-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      border-radius: 12px;
+    }
+
+    .logo-drive-link:focus-visible {
+      outline: 3px solid rgba(37,99,235,0.45);
+      outline-offset: 3px;
+    }
+
+        .brand-logo {
+      transition: transform 0.2s ease, opacity 0.2s ease;
+      display: block;
+      width: 220px;
+      max-width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+
+    .brand-title {
+      font-size: 18px;
+      font-weight: bold;
+      line-height: 1.3;
+      color: white;
+    }
+
+    .brand-subtitle {
+      margin-top: 5px;
+      font-size: 10px;
+      line-height: 1.4;
+      color: #94a3b8;
+    }
+
+
+    .side-menu {
+      padding: 20px 12px;
+
+      flex: 1;
+    }
+
+
+    .menu-label {
+      font-size: 11px;
+
+      color: #64748b;
+
+      font-weight: bold;
+
+      text-transform: uppercase;
+
+      padding:
+        10px
+        12px
+        8px;
+    }
+
+
+    .side-btn {
+      width: 100%;
+
+      border: 0;
+
+      background: transparent;
+
+      color: #cbd5e1;
+
+      padding: 13px 14px;
+
+      margin-bottom: 5px;
+
+      border-radius: 9px;
+
+      text-align: left;
+
+      font-size: 15px;
+
+      cursor: pointer;
+
+      transition:
+        background 0.2s,
+        color 0.2s;
+    }
+
+
+    .side-btn:hover {
+      background:
+        rgba(255,255,255,0.08);
+
+      color: white;
+    }
+
+
+    .side-btn.active {
+      background: #2563eb;
+
+      color: white;
+    }
+
+
+    .side-icon {
+      display: inline-block;
+
+      width: 25px;
+
+      font-size: 17px;
+    }
+
+
+    .sidebar-footer {
+      padding: 18px;
+
+      border-top:
+        1px solid
+        rgba(255,255,255,0.1);
+
+      color: #94a3b8;
+
+      font-size: 12px;
+
+      line-height: 1.5;
+    }
+
+
+    /* =========================================
+       MAIN
+    ========================================= */
+
+    .main {
+      margin-left: 250px;
+
+      width: calc(100% - 250px);
+
+      min-height: 100vh;
+    }
+
+
+    .topbar {
+      height: 70px;
+
+      background: white;
+
+      border-bottom:
+        1px solid #e2e8f0;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      padding:
+        0 30px;
+
+      position: sticky;
+
+      top: 0;
+
+      z-index: 100;
+    }
+
+
+    .topbar-title {
+      font-size: 20px;
+
+      font-weight: bold;
+    }
+
+
+    .topbar-info {
+      color: #64748b;
+
+      font-size: 14px;
+    }
+
+
+    .content {
+      padding: 30px;
+
+      max-width: 1500px;
+
+      margin: 0 auto;
+    }
+
+
+    /* =========================================
+       PAGE
+    ========================================= */
+
+    .page {
+      display: none;
+    }
+
+
+    .page.active {
+      display: block;
+    }
+
+
+    .page-title {
+      margin: 0;
+
+      font-size: 32px;
+    }
+
+
+    .page-subtitle {
+      color: #64748b;
+
+      margin-top: 8px;
+
+      margin-bottom: 28px;
+
+      font-size: 16px;
+    }
+
+
+    /* =========================================
+       DASHBOARD CARDS
+    ========================================= */
+
+    .cards {
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          4,
+          minmax(0, 1fr)
+        );
+
+      gap: 18px;
+
+      margin-bottom: 25px;
+    }
+
+
+    .card {
+      background: white;
+
+      border-radius: 15px;
+
+      padding: 22px;
+
+      border:
+        1px solid #e2e8f0;
+
+      box-shadow:
+        0 2px 8px
+        rgba(15,23,42,0.04);
+    }
+
+
+    .card-label {
+      color: #64748b;
+
+      font-size: 14px;
+
+      margin-bottom: 10px;
+    }
+
+
+    .card-value {
+      font-size: 30px;
+
+      font-weight: bold;
+
+      color: #172033;
+    }
+
+
+    .card-description {
+      margin-top: 8px;
+
+      font-size: 12px;
+
+      color: #94a3b8;
+    }
+
+
+    .card-icon {
+      float: right;
+
+      font-size: 24px;
+    }
+
+
+    /* =========================================
+       CONTENT BOX
+    ========================================= */
+
+    .box {
+      background: white;
+
+      border:
+        1px solid #e2e8f0;
+
+      border-radius: 15px;
+
+      padding: 24px;
+
+      margin-bottom: 25px;
+
+      box-shadow:
+        0 2px 8px
+        rgba(15,23,42,0.04);
+    }
+
+
+    .box-title {
+      margin: 0 0 5px;
+
+      font-size: 20px;
+    }
+
+
+    .box-subtitle {
+      color: #64748b;
+
+      font-size: 14px;
+
+      margin-bottom: 20px;
+    }
+
+
+    /* =========================================
+       TABLE
+    ========================================= */
+
+    .table-wrapper {
+      width: 100%;
+
+      overflow-x: auto;
+    }
+
+
+    table {
+      width: 100%;
+
+      border-collapse: collapse;
+
+      min-width: 900px;
+    }
+
+
+    th,
+    td {
+      border-bottom:
+        1px solid #e2e8f0;
+
+      padding: 12px;
+
+      text-align: left;
+
+      vertical-align: top;
+
+      font-size: 14px;
+    }
+
+
+    th {
+      background: #eff6ff;
+
+      font-weight: bold;
+
+      color: #334155;
+
+      white-space: nowrap;
+    }
+
+
+    tbody tr:hover {
+      background: #f8fafc;
+    }
+
+
+    /* =========================================
+       BUTTON
+    ========================================= */
+
+    .btn {
+      border: 0;
+
+      border-radius: 9px;
+
+      padding: 11px 17px;
+
+      font-size: 14px;
+
+      font-weight: bold;
+
+      cursor: pointer;
+
+      text-decoration: none;
+
+      display: inline-block;
+    }
+
+
+    .btn-primary {
+      background: #2563eb;
+
+      color: white;
+    }
+
+
+    .btn-primary:hover {
+      background: #1d4ed8;
+    }
+
+
+    .btn-secondary {
+      background: #eef2ff;
+
+      color: #2563eb;
+    }
+
+
+    .btn-secondary:hover {
+      background: #e0e7ff;
+    }
+
+
+    .btn-success {
+      background: #059669;
+
+      color: white;
+    }
+
+
+    /* =========================================
+       UPLOAD
+    ========================================= */
+
+    .upload-box {
+      background: white;
+
+      border:
+        2px dashed #cbd5e1;
+
+      border-radius: 18px;
+
+      padding: 50px 30px;
+
+      text-align: center;
+    }
+
+
+    .upload-title {
+      font-size: 23px;
+
+      font-weight: bold;
+
+      margin-bottom: 25px;
+    }
+
+
+    input[type="file"] {
+      display: none;
+    }
+
+
+    .choose-btn {
+      display: inline-block;
+
+      padding: 13px 22px;
+
+      background: #eef2ff;
+
+      color: #2563eb;
+
+      border-radius: 9px;
+
+      cursor: pointer;
+
+      font-weight: bold;
+    }
+
+
+    .file-name {
+      min-height: 30px;
+
+      margin: 18px 0;
+
+      color: #475569;
+    }
+
+
+    .upload-btn {
+      border: 0;
+
+      background: #2563eb;
+
+      color: white;
+
+      padding: 14px 28px;
+
+      border-radius: 9px;
+
+      font-size: 16px;
+
+      font-weight: bold;
+
+      cursor: pointer;
+    }
+
+
+    .upload-btn:disabled {
+      background: #94a3b8;
+
+      cursor: not-allowed;
+    }
+
+
+    /* =========================================
+       MESSAGE
+    ========================================= */
+
+    .message {
+      margin-top: 20px;
+
+      padding: 16px;
+
+      border-radius: 10px;
+
+      display: none;
+
+      font-size: 14px;
+    }
+
+
+    .error {
+      background: #fef2f2;
+
+      color: #b91c1c;
+    }
+
+
+    .success {
+      background: #ecfdf5;
+
+      color: #047857;
+    }
+
+
+    .loading {
+      background: #eff6ff;
+
+      color: #1d4ed8;
+    }
+
+
+    /* =========================================
+       SEARCH
+    ========================================= */
+
+    .toolbar {
+      display: flex;
+
+      gap: 12px;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      flex-wrap: wrap;
+
+      margin-bottom: 20px;
+    }
+
+
+    .search {
+      flex: 1;
+
+      min-width: 250px;
+
+      padding: 12px 14px;
+
+      border:
+        1px solid #cbd5e1;
+
+      border-radius: 9px;
+
+      font-size: 14px;
+
+      outline: none;
+    }
+
+
+    .search:focus {
+      border-color: #2563eb;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(37,99,235,0.1);
+    }
+
+
+    /* =========================================
+       BADGE
+    ========================================= */
+
+    .badge {
+      display: inline-block;
+
+      padding: 5px 9px;
+
+      border-radius: 20px;
+
+      background: #eff6ff;
+
+      color: #2563eb;
+
+      font-size: 12px;
+
+      font-weight: bold;
+    }
+
+
+    /* =========================================
+       EMPTY
+    ========================================= */
+
+    .empty {
+      padding: 35px;
+
+      text-align: center;
+
+      color: #64748b;
+    }
+
+
+    /* =========================================
+       MOBILE
+    ========================================= */
+
+    .mobile-menu {
+      display: none;
+    }
+
+
+    @media (max-width: 1000px) {
+
+      .cards {
+        grid-template-columns:
+          repeat(
+            2,
+            minmax(0, 1fr)
+          );
+      }
+
+    }
+
+
+    @media (max-width: 700px) {
+
+      .sidebar {
+        width: 70px;
+
+        min-width: 70px;
+      }
+
+
+      .brand-title,
+      .brand-subtitle,
+      .menu-label,
+      .sidebar-footer {
+        display: none;
+      }
+
+
+      .brand {
+        padding: 14px 8px;
+        text-align: center;
+      }
+
+      .brand-logo {
+        width: 54px;
+      }
+
+
+      .side-btn {
+        text-align: center;
+
+        padding: 14px 5px;
+      }
+
+
+      .side-icon {
+        width: auto;
+
+        font-size: 20px;
+      }
+
+
+      .side-text {
+        display: none;
+      }
+
+
+      .main {
+        margin-left: 70px;
+
+        width:
+          calc(100% - 70px);
+      }
+
+
+      .topbar {
+        padding:
+          0 15px;
+      }
+
+
+      .topbar-info {
+        display: none;
+      }
+
+
+      .content {
+        padding: 20px 15px;
+      }
+
+
+      .page-title {
+        font-size: 26px;
+      }
+
+
+      .cards {
+        grid-template-columns:
+          1fr 1fr;
+
+        gap: 10px;
+      }
+
+
+      .card {
+        padding: 16px;
+      }
+
+
+      .card-value {
+        font-size: 24px;
+      }
+
+    }
+
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+  <!-- =========================================
+       SIDEBAR
+  ========================================= -->
+
+  <aside class="sidebar">
+
+
+  <div class="brand">
+
+  <div class="brand-logo-wrap">
+
+    <a
+        id="logoDriveLink"
+        class="logo-drive-link"
+        href="https://drive.google.com/drive/folders/17kBkPqXoFBh_MvD4x2TFwzKBb3VA6kU9"
+        target="_blank"
+        rel="noopener"
+        title="Buka folder logo SIPT-ASN"
+      >
+        <img
+          id="appLogo"
+          class="brand-logo"
+          alt="Logo SIPT-ASN"
+          style="visibility:hidden;"
+        >
+      </a>
+
+  </div>
+
+ 
+
+  <div class="brand-subtitle">
+    Sistem Informasi Pertimbangan Teknis ASN
+  </div>
+
+</div>
+
+
+    <div class="side-menu">
+
+
+      <div class="menu-label">
+        MENU UTAMA
+      </div>
+
+
+      <button
+        id="navDashboard"
+        class="side-btn active"
+        onclick="showPage('dashboard')"
+      >
+
+        <span class="side-icon">
+          📊
+        </span>
+
+        <span class="side-text">
+          Dashboard
+        </span>
+
+      </button>
+
+
+      <button
+        id="navUpload"
+        class="side-btn"
+        onclick="showPage('upload')"
+      >
+
+        <span class="side-icon">
+          📤
+        </span>
+
+        <span class="side-text">
+          Upload Dokumen
+        </span>
+
+      </button>
+
+
+      <button
+        id="navPegawai"
+        class="side-btn"
+        onclick="showPage('pegawai')"
+      >
+
+        <span class="side-icon">
+          👥
+        </span>
+
+        <span class="side-text">
+          Data Pegawai
+        </span>
+
+      </button>
+
+
+      <button
+        id="navDokumen"
+        class="side-btn"
+        onclick="showPage('dokumen')"
+      >
+
+        <span class="side-icon">
+          📄
+        </span>
+
+        <span class="side-text">
+          Dokumen
+        </span>
+
+      </button>
+
+
+      <div class="menu-label">
+        SISTEM
+      </div>
+
+
+      <button
+        id="navInfo"
+        class="side-btn"
+        onclick="showPage('info')"
+      >
+
+        <span class="side-icon">
+          ℹ️
+        </span>
+
+        <span class="side-text">
+          Informasi
+        </span>
+
+      </button>
+
+
+    </div>
+
+
+    <div class="sidebar-footer">
+
+      <br>
+      DEFARA.dev
+
+    </div>
+
+
+  </aside>
+
+
+
+  <!-- =========================================
+       MAIN
+  ========================================= -->
+
+  <main class="main">
+
+
+    <header class="topbar">
+
+      <div
+        id="topbarTitle"
+        class="topbar-title"
+      >
+        Dashboard
+      </div>
+
+
+      <div class="topbar-info">
+        Sistem Informasi Pertimbangan Teknis ASN
+      </div>
+
+    </header>
+
+
+
+    <div class="content">
+
+
+      <!-- =====================================
+           DASHBOARD
+      ===================================== -->
+
+      <section
+        id="pageDashboard"
+        class="page active"
+      >
+
+
+        <h1 class="page-title">
+          Dashboard
+        </h1>
+
+
+        <div class="page-subtitle">
+          Ringkasan data pegawai dan dokumen rekomendasi.
+        </div>
+
+
+
+        <div class="cards">
+
+
+          <div class="card">
+
+            <div class="card-icon">
+              👥
+            </div>
+
+            <div class="card-label">
+              Total Pegawai
+            </div>
+
+            <div
+              id="totalPegawai"
+              class="card-value"
+            >
+              -
+            </div>
+
+            <div class="card-description">
+              Data pegawai tersimpan
+            </div>
+
+          </div>
+
+
+
+          <div class="card">
+
+            <div class="card-icon">
+              📄
+            </div>
+
+            <div class="card-label">
+              Total Dokumen
+            </div>
+
+            <div
+              id="totalDokumen"
+              class="card-value"
+            >
+              -
+            </div>
+
+            <div class="card-description">
+              Dokumen yang sudah diupload
+            </div>
+
+          </div>
+
+
+
+          <div class="card">
+
+            <div class="card-icon">
+              📅
+            </div>
+
+            <div class="card-label">
+              Upload Hari Ini
+            </div>
+
+            <div
+              id="uploadHariIni"
+              class="card-value"
+            >
+              -
+            </div>
+
+            <div class="card-description">
+              Pegawai masuk hari ini
+            </div>
+
+          </div>
+
+
+
+          <div class="card">
+
+            <div class="card-icon">
+              🔢
+            </div>
+
+            <div class="card-label">
+              NIP Unik
+            </div>
+
+            <div
+              id="nipUnik"
+              class="card-value"
+            >
+              -
+            </div>
+
+            <div class="card-description">
+              NIP tanpa duplikasi
+            </div>
+
+          </div>
+
+
+        </div>
+
+
+
+        <!-- RECENT -->
+
+        <div class="box">
+
+          <h2 class="box-title">
+            Pegawai Terbaru
+          </h2>
+
+          <div class="box-subtitle">
+            Data terakhir yang masuk ke sistem.
+          </div>
+
+
+          <div class="table-wrapper">
+
+            <table>
+
+              <thead>
+
+                <tr>
+
+                  <th>
+                    NO
+                  </th>
+
+                  <th>
+                    NAMA
+                  </th>
+
+                  <th>
+                    NIP
+                  </th>
+
+                  <th>
+                    JABATAN BARU
+                  </th>
+
+                  <th>
+                    TANGGAL UPLOAD
+                  </th>
+
+                </tr>
+
+              </thead>
+
+
+              <tbody
+                id="recentBody"
+              >
+
+                <tr>
+
+                  <td
+                    colspan="5"
+                    class="empty"
+                  >
+                    Memuat data...
+
+                  </td>
+
+                </tr>
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+
+      </section>
+
+
+
+      <!-- =====================================
+           UPLOAD
+      ===================================== -->
+
+      <section
+        id="pageUpload"
+        class="page"
+      >
+
+
+        <h1 class="page-title">
+          Upload Dokumen
+        </h1>
+
+
+        <div class="page-subtitle">
+          Upload PDF atau hasil scan untuk diproses OCR.
+        </div>
+
+
+        <div class="upload-box">
+
+
+          <div class="upload-title">
+            Pilih dokumen rekomendasi
+          </div>
+
+
+          <label
+            class="choose-btn"
+            for="fileInput"
+          >
+            Pilih File
+          </label>
+
+
+          <input
+            id="fileInput"
+            type="file"
+            accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"
+          >
+
+
+          <div
+            id="fileName"
+            class="file-name"
+          >
+            Belum ada file dipilih
+          </div>
+
+
+          <button
+            id="uploadBtn"
+            class="upload-btn"
+            onclick="uploadFile()"
+          >
+            Upload & Proses
+          </button>
+
+
+        </div>
+
+
+        <div
+          id="message"
+          class="message"
+        ></div>
+
+
+        <div
+          id="uploadResult"
+          class="box"
+          style="display:none;margin-top:25px;"
+        >
+
+
+          <h2 class="box-title">
+            Hasil Ekstraksi
+          </h2>
+
+
+          <div
+            id="uploadSummary"
+            style="margin-top:15px;"
+          ></div>
+
+
+          <div
+            style="
+              margin-top:20px;
+              display:flex;
+              gap:10px;
+              flex-wrap:wrap;
+            "
+          >
+
+            <a
+              id="driveLink"
+              class="btn btn-primary"
+              target="_blank"
+            >
+              Buka Google Drive
+            </a>
+
+
+            <a
+              id="sheetLink"
+              class="btn btn-success"
+              target="_blank"
+            >
+              Buka Google Sheets
+            </a>
+
+          </div>
+
+
+          <div
+            class="table-wrapper"
+            style="margin-top:20px;"
+          >
+
+            <table>
+
+              <thead>
+
+                <tr>
+
+                  <th>
+                    NO
+                  </th>
+
+                  <th>
+                    NAMA
+                  </th>
+
+                  <th>
+                    NIP
+                  </th>
+
+                  <th>
+                    JABATAN BARU
+                  </th>
+
+                </tr>
+
+              </thead>
+
+
+              <tbody
+                id="resultBody"
+              ></tbody>
+
+            </table>
+
+          </div>
+
+
+        </div>
+
+
+      </section>
+
+
+
+      <!-- =====================================
+           PEGAWAI
+      ===================================== -->
+
+      <section
+        id="pagePegawai"
+        class="page"
+      >
+
+
+        <h1 class="page-title">
+          Data Pegawai
+        </h1>
+
+
+        <div class="page-subtitle">
+          Seluruh data pegawai yang tersimpan di Google Sheets.
+        </div>
+
+
+        <div class="box">
+
+
+          <div class="toolbar">
+
+
+            <input
+              id="searchEmployee"
+              class="search"
+              type="text"
+              placeholder="Cari nama, NIP, atau jabatan..."
+              oninput="filterEmployees()"
+            >
+
+
+            <a
+              id="sheetWebLink"
+              class="btn btn-success"
+              target="_blank"
+            >
+              Buka Google Sheets
+            </a>
+
+
+          </div>
+
+
+          <div
+            id="employeeCount"
+            class="box-subtitle"
+          >
+            Memuat data...
+          </div>
+
+
+          <div class="table-wrapper">
+
+            <table>
+
+              <thead>
+
+                <tr>
+
+                  <th>
+                    NO
+                  </th>
+
+                  <th>
+                    NAMA
+                  </th>
+
+                  <th>
+                    NIP
+                  </th>
+
+                  <th>
+                    JABATAN BARU
+                  </th>
+
+                  <th>
+                    NAMA DOKUMEN
+                  </th>
+
+                  <th>
+                    DOKUMEN
+                  </th>
+
+                  <th>
+                    TANGGAL UPLOAD
+                  </th>
+
+                </tr>
+
+              </thead>
+
+
+              <tbody
+                id="employeeBody"
+              >
+
+                <tr>
+
+                  <td
+                    colspan="7"
+                    class="empty"
+                  >
+                    Memuat data...
+
+                  </td>
+
+                </tr>
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+
+      </section>
+
+
+
+      <!-- =====================================
+           DOKUMEN
+      ===================================== -->
+
+      <section
+        id="pageDokumen"
+        class="page"
+      >
+
+
+        <h1 class="page-title">
+          Dokumen
+        </h1>
+
+
+        <div class="page-subtitle">
+          Daftar dokumen rekomendasi yang tersimpan di Google Drive.
+        </div>
+
+
+        <div class="box">
+
+
+          <div class="toolbar">
+
+            <input
+              id="searchDocument"
+              class="search"
+              type="text"
+              placeholder="Cari nama dokumen..."
+              oninput="filterDocuments()"
+            >
+
+          </div>
+
+
+          <div class="table-wrapper">
+
+            <table>
+
+              <thead>
+
+                <tr>
+
+                  <th>
+                    NO
+                  </th>
+
+                  <th>
+                    NAMA DOKUMEN
+                  </th>
+
+                  <th>
+                    JUMLAH PEGAWAI
+                  </th>
+
+                  <th>
+                    TANGGAL UPLOAD
+                  </th>
+
+                  <th>
+                    AKSI
+                  </th>
+
+                </tr>
+
+              </thead>
+
+
+              <tbody
+                id="documentBody"
+              >
+
+                <tr>
+
+                  <td
+                    colspan="5"
+                    class="empty"
+                  >
+                    Memuat data...
+
+                  </td>
+
+                </tr>
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+
+        </div>
+
+
+      </section>
+
+
+
+      <!-- =====================================
+           INFO
+      ===================================== -->
+
+      <section
+        id="pageInfo"
+        class="page"
+      >
+
+
+        <h1 class="page-title">
+          Informasi Sistem
+        </h1>
+
+
+        <div class="page-subtitle">
+          Informasi aplikasi dan proses pengolahan data.
+        </div>
+
+
+        <div class="box">
+
+          <h2 class="box-title">
+            Sistem Data Pegawai
+          </h2>
+
+
+          <p>
+            Aplikasi digunakan untuk mengupload
+            dokumen rekomendasi pegawai, melakukan
+            ekstraksi menggunakan OCR, dan menyimpan
+            hasilnya ke Google Sheets.
+          </p>
+
+
+          <p>
+            Data hasil ekstraksi tetap perlu diperiksa
+            sebelum digunakan sebagai data resmi.
+          </p>
+
+
+          <hr
+            style="
+              border:0;
+              border-top:
+                1px solid #e2e8f0;
+              margin:25px 0;
+            "
+          >
+
+
+          <b>
+            Struktur Data Spreadsheet
+          </b>
+
+
+          <ul>
+
+            <li>
+              NO
+            </li>
+
+            <li>
+              NAMA
+            </li>
+
+            <li>
+              NIP
+            </li>
+
+            <li>
+              JABATAN BARU
+            </li>
+
+            <li>
+              NAMA DOKUMEN
+            </li>
+
+            <li>
+              LINK DOKUMEN
+            </li>
+
+            <li>
+              TANGGAL UPLOAD
+            </li>
+
+          </ul>
+
+        </div>
+
+
+      </section>
+
+
+    </div>
+
+  </main>
+
+</div>
+
+
+
+<script>
+
+
+
+/* =================================================
+   LOGO DARI GOOGLE DRIVE
+   ================================================= */
+
+function loadAppLogo() {
+
+  google.script.run
+
+    .withSuccessHandler(
+      function(logoUrl) {
+
+        const logo =
+          document.getElementById('appLogo');
+
+        if (!logo) {
+          return;
+        }
+
+        if (logoUrl) {
+
+          logo.onload = function() {
+            logo.style.visibility = 'visible';
+          };
+
+          logo.onerror = function() {
+            logo.style.display = 'none';
+          };
+
+          logo.src = logoUrl;
+
+        } else {
+
+          logo.style.display = 'none';
+
+        }
+
+      }
+    )
+
+    .withFailureHandler(
+      function(error) {
+
+        console.error(
+          'Logo Drive error:',
+          error
+        );
+
+        const logo =
+          document.getElementById('appLogo');
+
+        if (logo) {
+          logo.style.display = 'none';
+        }
+
+      }
+    )
+
+    .getSiptAsnLogoUrl();
+
+}
+
+
+/* =================================================
+   GLOBAL DATA
+================================================= */
+
+let allEmployees = [];
+
+let allDocuments = [];
+
+
+
+/* =================================================
+   NAVIGATION
+================================================= */
+
+function showPage(
+  page
+) {
+
+
+  const pages = {
+
+    dashboard:
+      'pageDashboard',
+
+    upload:
+      'pageUpload',
+
+    pegawai:
+      'pagePegawai',
+
+    dokumen:
+      'pageDokumen',
+
+    info:
+      'pageInfo'
+
+  };
+
+
+  Object.keys(pages)
+    .forEach(
+      function(key) {
+
+        document
+          .getElementById(
+            pages[key]
+          )
+          .classList.remove(
+            'active'
+          );
+
+      }
+    );
+
+
+  document
+    .getElementById(
+      pages[page]
+    )
+    .classList.add(
+      'active'
+    );
+
+
+  const navs = {
+
+    dashboard:
+      'navDashboard',
+
+    upload:
+      'navUpload',
+
+    pegawai:
+      'navPegawai',
+
+    dokumen:
+      'navDokumen',
+
+    info:
+      'navInfo'
+
+  };
+
+
+  Object.keys(navs)
+    .forEach(
+      function(key) {
+
+        document
+          .getElementById(
+            navs[key]
+          )
+          .classList.remove(
+            'active'
+          );
+
+      }
+    );
+
+
+  document
+    .getElementById(
+      navs[page]
+    )
+    .classList.add(
+      'active'
+    );
+
+
+  const titles = {
+
+    dashboard:
+      'Dashboard',
+
+    upload:
+      'Upload Dokumen',
+
+    pegawai:
+      'Data Pegawai',
+
+    dokumen:
+      'Dokumen',
+
+    info:
+      'Informasi Sistem'
+
+  };
+
+
+  document
+    .getElementById(
+      'topbarTitle'
+    )
+    .textContent =
+    titles[page];
+
+
+  if (
+    page === 'dashboard'
+  ) {
+
+    loadDashboard();
+
+  }
+
+
+  if (
+    page === 'pegawai'
+  ) {
+
+    loadEmployees();
+
+  }
+
+
+  if (
+    page === 'dokumen'
+  ) {
+
+    loadDocuments();
+
+  }
+
+}
+
+
+
+/* =================================================
+   FILE CHANGE
+================================================= */
+
+document
+  .getElementById(
+    'fileInput'
+  )
+  .addEventListener(
+    'change',
+    function() {
+
+
+      if (
+        !this.files ||
+        !this.files.length
+      ) {
+
+        document
+          .getElementById(
+            'fileName'
+          )
+          .textContent =
+          'Belum ada file dipilih';
+
+        return;
+
+      }
+
+
+      document
+        .getElementById(
+          'fileName'
+        )
+        .textContent =
+        this.files[0].name;
+
+
+      hideMessage();
+
+    }
+  );
+
+
+
+/* =================================================
+   MESSAGE
+================================================= */
+
+function showMessage(
+  text,
+  type
+) {
+
+
+  const el =
+    document.getElementById(
+      'message'
+    );
+
+
+  el.textContent =
+    text;
+
+
+  el.className =
+    'message ' + type;
+
+
+  el.style.display =
+    'block';
+
+}
+
+
+function hideMessage() {
+
+  document
+    .getElementById(
+      'message'
+    )
+    .style.display =
+    'none';
+
+}
+
+
+
+/* =================================================
+   UPLOAD
+================================================= */
+
+function uploadFile() {
+
+
+  const input =
+    document.getElementById(
+      'fileInput'
+    );
+
+
+  if (
+    !input.files ||
+    !input.files.length
+  ) {
+
+    showMessage(
+      'Silakan pilih file terlebih dahulu.',
+      'error'
+    );
+
+    return;
+
+  }
+
+
+  const file =
+    input.files[0];
+
+
+  const allowed = [
+
+    'application/pdf',
+
+    'image/jpeg',
+
+    'image/png'
+
+  ];
+
+
+  if (
+    !allowed.includes(
+      file.type
+    )
+  ) {
+
+    showMessage(
+      'Format file harus PDF, JPG, JPEG, atau PNG.',
+      'error'
+    );
+
+    return;
+
+  }
+
+
+  const button =
+    document.getElementById(
+      'uploadBtn'
+    );
+
+
+  button.disabled =
+    true;
+
+
+  showMessage(
+    'File sedang diupload dan diproses OCR. Mohon tunggu...',
+    'loading'
+  );
+
+
+  const reader =
+    new FileReader();
+
+
+  reader.onload =
+    function(event) {
+
+
+      const base64 =
+        event.target.result
+          .split(',')[1];
+
+
+      const fileData = {
+
+        name:
+          file.name,
+
+        mimeType:
+          file.type,
+
+        base64:
+          base64
+
+      };
+
+
+      google.script.run
+
+        .withSuccessHandler(
+          handleUploadSuccess
+        )
+
+        .withFailureHandler(
+          handleUploadError
+        )
+
+        .uploadAndProcess(
+          fileData
+        );
+
+    };
+
+
+  reader.onerror =
+    function() {
+
+      button.disabled =
+        false;
+
+      showMessage(
+        'File gagal dibaca oleh browser.',
+        'error'
+      );
+
+    };
+
+
+  reader.readAsDataURL(
+    file
+  );
+
+}
+
+
+
+/* =================================================
+   UPLOAD SUCCESS
+================================================= */
+
+function handleUploadSuccess(
+  response
+) {
+
+
+  document
+    .getElementById(
+      'uploadBtn'
+    )
+    .disabled =
+    false;
+
+
+  if (!response) {
+
+    showMessage(
+      'Server tidak mengembalikan hasil.',
+      'error'
+    );
+
+    return;
+
+  }
+
+
+  const employees =
+    response.extracted ||
+    response.employees ||
+    response.data ||
+    [];
+
+
+  showMessage(
+    response.message ||
+    'Dokumen berhasil diproses.',
+    response.success === false
+      ? 'error'
+      : 'success'
+  );
+
+
+  const result =
+    document.getElementById(
+      'uploadResult'
+    );
+
+
+  result.style.display =
+    'block';
+
+
+  document
+    .getElementById(
+      'uploadSummary'
+    )
+    .innerHTML =
+
+      '<span class="badge">' +
+
+      'Ditemukan ' +
+
+      employees.length +
+
+      ' pegawai' +
+
+      '</span>';
+
+
+  const body =
+    document.getElementById(
+      'resultBody'
+    );
+
+
+  body.innerHTML =
+    '';
+
+
+  employees.forEach(
+    function(
+      employee,
+      index
+    ) {
+
+
+      const tr =
+        document.createElement(
+          'tr'
+        );
+
+
+      tr.innerHTML =
+
+        '<td>' +
+
+        escapeHtml(
+          employee.no ||
+          index + 1
+        ) +
+
+        '</td>' +
+
+
+        '<td>' +
+
+        escapeHtml(
+          employee.name ||
+          employee.nama ||
+          ''
+        ) +
+
+        '</td>' +
+
+
+        '<td>' +
+
+        escapeHtml(
+          employee.nip ||
+          ''
+        ) +
+
+        '</td>' +
+
+
+        '<td>' +
+
+        escapeHtml(
+          employee.newPosition ||
+          employee.jabatanBaru ||
+          employee.jabatan_baru ||
+          ''
+        ) +
+
+        '</td>';
+
+
+      body.appendChild(
+        tr
+      );
+
+    }
+  );
+
+
+  const drive =
+    document.getElementById(
+      'driveLink'
+    );
+
+
+  if (
+    response.fileUrl
+  ) {
+
+    drive.href =
+      response.fileUrl;
+
+  }
+
+
+  const sheet =
+    document.getElementById(
+      'sheetLink'
+    );
+
+
+  const sheetUrl =
+    response.spreadsheetUrl ||
+    response.sheetUrl ||
+    '';
+
+
+  if (sheetUrl) {
+
+    sheet.href =
+      sheetUrl;
+
+  }
+
+
+  /*
+   * Refresh dashboard/data
+   * setelah upload berhasil.
+   */
+
+  loadDashboard();
+
+  allEmployees = [];
+
+}
+
+
+
+/* =================================================
+   UPLOAD ERROR
+================================================= */
+
+function handleUploadError(
+  error
+) {
+
+
+  document
+    .getElementById(
+      'uploadBtn'
+    )
+    .disabled =
+    false;
+
+
+  let text =
+    'Terjadi kesalahan saat memproses dokumen.';
+
+
+  if (
+    error &&
+    error.message
+  ) {
+
+    text +=
+      ' ' +
+      error.message;
+
+  }
+
+
+  showMessage(
+    text,
+    'error'
+  );
+
+}
+
+
+
+/* =================================================
+   DASHBOARD
+================================================= */
+
+function loadDashboard() {
+
+
+  google.script.run
+
+    .withSuccessHandler(
+      function(response) {
+
+
+        if (
+          !response ||
+          response.success !== true
+        ) {
+
+          return;
+
+        }
+
+
+        document
+          .getElementById(
+            'totalPegawai'
+          )
+          .textContent =
+          response.totalPegawai || 0;
+
+
+        document
+          .getElementById(
+            'totalDokumen'
+          )
+          .textContent =
+          response.totalDokumen || 0;
+
+
+        document
+          .getElementById(
+            'uploadHariIni'
+          )
+          .textContent =
+          response.uploadHariIni || 0;
+
+
+        document
+          .getElementById(
+            'nipUnik'
+          )
+          .textContent =
+          response.nipUnik || 0;
+
+
+        renderRecent(
+          response.recent || []
+        );
+
+      }
+    )
+
+    .withFailureHandler(
+      function(error) {
+
+        console.error(
+          'Dashboard error:',
+          error
+        );
+
+      }
+    )
+
+    .getDashboardData();
+
+}
+
+
+
+/* =================================================
+   RECENT
+================================================= */
+
+function renderRecent(
+  data
+) {
+
+
+  const body =
+    document.getElementById(
+      'recentBody'
+    );
+
+
+  body.innerHTML =
+    '';
+
+
+  if (
+    !data ||
+    data.length === 0
+  ) {
+
+    body.innerHTML =
+
+      '<tr>' +
+
+      '<td colspan="5" class="empty">' +
+
+      'Belum ada data pegawai.' +
+
+      '</td>' +
+
+      '</tr>';
+
+    return;
+
+  }
+
+
+  data.forEach(
+    function(employee) {
+
+
+      const tr =
+        document.createElement(
+          'tr'
+        );
+
+
+      tr.innerHTML =
+
+        '<td>' +
+
+        escapeHtml(
+          employee.no
+        ) +
+
+        '</td>' +
+
+
+        '<td>' +
+
+        escapeHtml(
+          employee.nama
+        ) +
+
+        '</td>' +
+
+
+        '<td>' +
+
+        escapeHtml(
+          employee.nip
+        ) +
+
+        '</td>' +
+
+
+        '<td>' +
+
+        escapeHtml(
+          employee.jabatanBaru
+        ) +
+
+        '</td>' +
+
+
+        '<td>' +
+
+        escapeHtml(
+          employee.tanggalUpload
+        ) +
+
+        '</td>';
+
+
+      body.appendChild(
+        tr
+      );
+
+    }
+  );
+
+}
+
+
+
+/* =================================================
+   EMPLOYEES
+================================================= */
+
+function loadEmployees() {
+
+
+  google.script.run
+
+    .withSuccessHandler(
+      function(response) {
+
+
+        if (
+          !response ||
+          response.success !== true
+        ) {
+
+          return;
+
+        }
+
+
+        allEmployees =
+          response.data || [];
+
+
+        document
+          .getElementById(
+            'employeeCount'
+          )
+          .textContent =
+
+          'Jumlah data: ' +
+
+          allEmployees.length;
+
+
+        const sheetLink =
+          document.getElementById(
+            'sheetWebLink'
+          );
+
+
+        if (
+          response.spreadsheetUrl
+        ) {
+
+          sheetLink.href =
+            response.spreadsheetUrl;
+
+        }
+
+
+        renderEmployees(
+          allEmployees
+        );
+
+      }
+    )
+
+    .withFailureHandler(
+      function(error) {
+
+        console.error(
+          'Employee error:',
+          error
+        );
+
+      }
+    )
+
+    .getEmployeesForWeb();
+
+}
+
+
+
+/* =================================================
+   RENDER EMPLOYEES
+================================================= */
+
+function renderEmployees(
+  data
+) {
+
+
+  const body =
+    document.getElementById(
+      'employeeBody'
+    );
+
+
+  body.innerHTML =
+    '';
+
+
+  document
+    .getElementById(
+      'employeeCount'
+    )
+    .textContent =
+
+      'Jumlah data: ' +
+
+      data.length;
+
+
+  if (
+    data.length === 0
+  ) {
+
+    body.innerHTML =
+
+      '<tr>' +
+
+      '<td colspan="7" class="empty">' +
+
+      'Data tidak ditemukan.' +
+
+      '</td>' +
+
+      '</tr>';
+
+    return;
+
+  }
+
+
+  data.forEach(
+    function(employee) {
+
+
+      const tr =
+        document.createElement(
+          'tr'
+        );
+
+
+      let link =
+        '-';
+
+
+      if (
+        employee.linkDokumen
+      ) {
+
+        link =
+
+          '<a href="' +
+
+          escapeHtml(
+            employee.linkDokumen
+          ) +
+
+          '" target="_blank" ' +
+
+          'class="btn btn-secondary">' +
+
+          'Buka' +
+
+          '</a>';
+
+      }
+
+
+      tr.innerHTML =
+
+        '<td>' +
+
+        escapeHtml(
+          employee.no
+        ) +
+
+        '</td>' +
+
+
+        '<td>' +
+
+        escapeHtml(
+          employee.nama
+        ) +
+
+        '</td>' +
+
+
+        '<td>' +
+
+        escapeHtml(
+          employee.nip
+        ) +
+
+        '</td>' +
+
+
+        '<td>' +
+
+        escapeHtml(
+          employee.jabatanBaru
+        ) +
+
+        '</td>' +
+
+
+        '<td>' +
+
+        escapeHtml(
+          employee.namaDokumen
+        ) +
+
+        '</td>' +
+
+
+        '<td>' +
+
+        link +
+
+        '</td>' +
+
+
+        '<td>' +
+
+        escapeHtml(
+          employee.tanggalUpload
+        ) +
+
+        '</td>';
+
+
+      body.appendChild(
+        tr
+      );
+
+    }
+  );
+
+}
+
+
+
+/* =================================================
+   SEARCH EMPLOYEE
+================================================= */
+
+function filterEmployees() {
+
+
+  const keyword =
+    document
+      .getElementById(
+        'searchEmployee'
+      )
+      .value
+      .toLowerCase()
+      .trim();
+
+
+  if (!keyword) {
+
+    renderEmployees(
+      allEmployees
+    );
+
+    return;
+
+  }
+
+
+  const filtered =
+    allEmployees.filter(
+      function(employee) {
+
+
+        return (
+
+          String(
+            employee.nama || ''
+          )
+            .toLowerCase()
+            .includes(
+              keyword
+            )
+
+          ||
+
+          String(
+            employee.nip || ''
+          )
+            .toLowerCase()
+            .includes(
+              keyword
+            )
+
+          ||
+
+          String(
+            employee.jabatanBaru || ''
+          )
+            .toLowerCase()
+            .includes(
+              keyword
+            )
+
+        );
+
+      }
+    );
+
+
+  renderEmployees(
+    filtered
+  );
+
+}
+
+
+
+/* =================================================
+   DOCUMENTS
+================================================= */
+
+function loadDocuments() {
+
+
+  google.script.run
+
+    .withSuccessHandler(
+      function(response) {
+
+
+        if (
+          !response ||
+          response.success !== true
+        ) {
+
+          return;
+
+        }
+
+
+        allDocuments =
+          response.data || [];
+
+
+        renderDocuments(
+          allDocuments
+        );
+
+      }
+    )
+
+    .withFailureHandler(
+      function(error) {
+
+        console.error(
+          'Document error:',
+          error
+        );
+
+      }
+    )
+
+    .getDocumentsForWeb();
+
+}
+
+
+
+/* =================================================
+   RENDER DOCUMENTS
+================================================= */
+
+function renderDocuments(
+  data
+) {
+
+
+  const body =
+    document.getElementById(
+      'documentBody'
+    );
+
+
+  body.innerHTML =
+    '';
+
+
+  if (
+    data.length === 0
+  ) {
+
+    body.innerHTML =
+
+      '<tr>' +
+
+      '<td colspan="5" class="empty">' +
+
+      'Belum ada dokumen.' +
+
+      '</td>' +
+
+      '</tr>';
+
+    return;
+
+  }
+
+
+  data.forEach(
+    function(doc, index) {
+
+
+      const tr =
+        document.createElement(
+          'tr'
+        );
+
+
+      let action =
+        '-';
+
+
+      if (
+        doc.linkDokumen
+      ) {
+
+        action =
+
+          '<a href="' +
+
+          escapeHtml(
+            doc.linkDokumen
+          ) +
+
+          '" target="_blank" ' +
+
+          'class="btn btn-primary">' +
+
+          'Buka Dokumen' +
+
+          '</a>';
+
+      }
+
+
+      tr.innerHTML =
+
+        '<td>' +
+
+        (index + 1) +
+
+        '</td>' +
+
+
+        '<td>' +
+
+        escapeHtml(
+          doc.namaDokumen
+        ) +
+
+        '</td>' +
+
+
+        '<td>' +
+
+        escapeHtml(
+          doc.jumlahPegawai
+        ) +
+
+        '</td>' +
+
+
+        '<td>' +
+
+        escapeHtml(
+          doc.tanggalUpload
+        ) +
+
+        '</td>' +
+
+
+        '<td>' +
+
+        action +
+
+        '</td>';
+
+
+      body.appendChild(
+        tr
+      );
+
+    }
+  );
+
+}
+
+
+
+/* =================================================
+   SEARCH DOCUMENT
+================================================= */
+
+function filterDocuments() {
+
+
+  const keyword =
+    document
+      .getElementById(
+        'searchDocument'
+      )
+      .value
+      .toLowerCase()
+      .trim();
+
+
+  if (!keyword) {
+
+    renderDocuments(
+      allDocuments
+    );
+
+    return;
+
+  }
+
+
+  const filtered =
+    allDocuments.filter(
+      function(doc) {
+
+        return String(
+          doc.namaDokumen || ''
+        )
+          .toLowerCase()
+          .includes(
+            keyword
+          );
+
+      }
+    );
+
+
+  renderDocuments(
+    filtered
+  );
+
+}
+
+
+
+/* =================================================
+   ESCAPE
+================================================= */
+
+function escapeHtml(
+  value
+) {
+
+  return String(
+    value == null
+      ? ''
+      : value
+  )
+
+    .replace(
+      /&/g,
+      '&amp;'
+    )
+
+    .replace(
+      /</g,
+      '&lt;'
+    )
+
+    .replace(
+      />/g,
+      '&gt;'
+    )
+
+    .replace(
+      /"/g,
+      '&quot;'
+    )
+
+    .replace(
+      /'/g,
+      '&#039;'
+    );
+
+}
+
+
+
+/* =================================================
+   LOAD AWAL
+================================================= */
+
+window.addEventListener(
+  'load',
+  function() {
+
+    loadAppLogo();
+    loadDashboard();
+
+  }
+);
+
+
+</script>
+
+
+</body>
+
+</html>
