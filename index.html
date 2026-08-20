@@ -2649,73 +2649,91 @@ function renderRecent(
 
 function loadEmployees() {
 
+  const API_URL =
+    "https://script.google.com/macros/s/AKfycbzj_BEGDjdx9ES8kSrqYaIez-V-35BS1eO7seDz-VDd6WoPXoPEKn2QAh4YqYjCWqxK/exec";
 
-  google.script.run
+  fetch(API_URL, {
 
-    .withSuccessHandler(
-      function(response) {
+    method: "POST",
 
+    headers: {
+      "Content-Type": "text/plain;charset=utf-8"
+    },
 
-        if (
-          !response ||
-          response.success !== true
-        ) {
+    body: JSON.stringify({
+      action: "employees"
+    })
 
-          return;
+  })
 
-        }
+  .then(function(response) {
 
+    if (!response.ok) {
+      throw new Error(
+        "HTTP Error: " + response.status
+      );
+    }
 
-        allEmployees =
-          response.data || [];
+    return response.json();
 
+  })
 
-        document
-          .getElementById(
-            'employeeCount'
-          )
-          .textContent =
+  .then(function(response) {
 
-          'Jumlah data: ' +
+    console.log(
+      "Employees response:",
+      response
+    );
 
-          allEmployees.length;
+    if (
+      !response ||
+      response.success !== true
+    ) {
+      console.error(
+        "Data pegawai gagal:",
+        response
+      );
+      return;
+    }
 
+    allEmployees =
+      response.data || [];
 
-        const sheetLink =
-          document.getElementById(
-            'sheetWebLink'
-          );
+    document
+      .getElementById(
+        "employeeCount"
+      )
+      .textContent =
+      "Jumlah data: " +
+      allEmployees.length;
 
+    const sheetLink =
+      document.getElementById(
+        "sheetWebLink"
+      );
 
-        if (
-          response.spreadsheetUrl
-        ) {
+    if (
+      sheetLink &&
+      response.spreadsheetUrl
+    ) {
+      sheetLink.href =
+        response.spreadsheetUrl;
+    }
 
-          sheetLink.href =
-            response.spreadsheetUrl;
+    renderEmployees(
+      allEmployees
+    );
 
-        }
+  })
 
+  .catch(function(error) {
 
-        renderEmployees(
-          allEmployees
-        );
+    console.error(
+      "Employee error:",
+      error
+    );
 
-      }
-    )
-
-    .withFailureHandler(
-      function(error) {
-
-        console.error(
-          'Employee error:',
-          error
-        );
-
-      }
-    )
-
-    .getEmployeesForWeb();
+  });
 
 }
 
