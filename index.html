@@ -2426,9 +2426,19 @@ function handleUploadSuccess(
    * setelah upload berhasil.
    */
 
-  loadDashboard();
+ // ================================================
+// REFRESH DATA SETELAH UPLOAD BERHASIL
+// ================================================
 
-  allEmployees = [];
+loadDashboard();
+
+loadEmployees();
+
+loadDocuments();
+
+allEmployees = [];
+
+allDocuments = [];
 
 }
 
