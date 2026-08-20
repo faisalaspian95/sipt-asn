@@ -1719,58 +1719,79 @@
 
 function loadAppLogo() {
 
-  google.script.run
+  const API_URL =
+    "https://script.google.com/macros/s/AKfycbzj_BEGDjdx9ES8kSrqYaIez-V-35BS1eO7seDz-VDd6WoPXoPEKn2QAh4YqYjCWqxK/exec";
 
-    .withSuccessHandler(
-      function(logoUrl) {
+  const logo =
+    document.getElementById('appLogo');
 
-        const logo =
-          document.getElementById('appLogo');
+  if (!logo) {
+    return;
+  }
 
-        if (!logo) {
-          return;
-        }
+  fetch(API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "text/plain;charset=utf-8"
+    },
+    body: JSON.stringify({
+      action: "logo"
+    })
+  })
 
-        if (logoUrl) {
+  .then(function(response) {
 
-          logo.onload = function() {
-            logo.style.visibility = 'visible';
-          };
+    if (!response.ok) {
+      throw new Error(
+        "HTTP Error: " + response.status
+      );
+    }
 
-          logo.onerror = function() {
-            logo.style.display = 'none';
-          };
+    return response.json();
 
-          logo.src = logoUrl;
+  })
 
-        } else {
+  .then(function(response) {
 
-          logo.style.display = 'none';
+    console.log(
+      "Logo response:",
+      response
+    );
 
-        }
+    if (
+      response &&
+      response.success === true &&
+      response.logoUrl
+    ) {
 
-      }
-    )
+      logo.onload = function() {
+        logo.style.visibility = 'visible';
+      };
 
-    .withFailureHandler(
-      function(error) {
+      logo.onerror = function() {
+        logo.style.display = 'none';
+      };
 
-        console.error(
-          'Logo Drive error:',
-          error
-        );
+      logo.src = response.logoUrl;
 
-        const logo =
-          document.getElementById('appLogo');
+    } else {
 
-        if (logo) {
-          logo.style.display = 'none';
-        }
+      logo.style.display = 'none';
 
-      }
-    )
+    }
 
-    .getSiptAsnLogoUrl();
+  })
+
+  .catch(function(error) {
+
+    console.error(
+      "Logo error:",
+      error
+    );
+
+    logo.style.display = 'none';
+
+  });
 
 }
 
