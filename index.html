@@ -2984,46 +2984,72 @@ function filterEmployees() {
 
 function loadDocuments() {
 
+  const API_URL =
+    "https://script.google.com/macros/s/AKfycbzj_BEGDjdx9ES8kSrqYaIez-V-35BS1eO7seDz-VDd6WoPXoPEKn2QAh4YqYjCWqxK/exec";
 
-  google.script.run
+  fetch(API_URL, {
 
-    .withSuccessHandler(
-      function(response) {
+    method: "POST",
 
+    headers: {
+      "Content-Type": "text/plain;charset=utf-8"
+    },
 
-        if (
-          !response ||
-          response.success !== true
-        ) {
+    body: JSON.stringify({
+      action: "documents"
+    })
 
-          return;
+  })
 
-        }
+  .then(function(response) {
 
+    if (!response.ok) {
+      throw new Error(
+        "HTTP Error: " + response.status
+      );
+    }
 
-        allDocuments =
-          response.data || [];
+    return response.json();
 
+  })
 
-        renderDocuments(
-          allDocuments
-        );
+  .then(function(response) {
 
-      }
-    )
+    console.log(
+      "Documents response:",
+      response
+    );
 
-    .withFailureHandler(
-      function(error) {
+    if (
+      !response ||
+      response.success !== true
+    ) {
 
-        console.error(
-          'Document error:',
-          error
-        );
+      console.error(
+        "Data dokumen gagal:",
+        response
+      );
 
-      }
-    )
+      return;
+    }
 
-    .getDocumentsForWeb();
+    allDocuments =
+      response.data || [];
+
+    renderDocuments(
+      allDocuments
+    );
+
+  })
+
+  .catch(function(error) {
+
+    console.error(
+      "Document error:",
+      error
+    );
+
+  });
 
 }
 
