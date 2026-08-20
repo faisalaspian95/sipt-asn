@@ -2153,20 +2153,65 @@ function uploadFile() {
       };
 
 
-      google.script.run
+      const API_URL =
+  "https://script.google.com/macros/s/AKfycbzj_BEGDjdx9ES8kSrqYaIez-V-35BS1eO7seDz-VDd6WoPXoPEKn2QAh4YqYjCWqxK/exec";
 
-        .withSuccessHandler(
-          handleUploadSuccess
-        )
 
-        .withFailureHandler(
-          handleUploadError
-        )
+fetch(API_URL, {
 
-        .uploadAndProcess(
-          fileData
-        );
+  method: "POST",
 
+  headers: {
+    "Content-Type": "text/plain;charset=utf-8"
+  },
+
+  body: JSON.stringify({
+    action: "upload",
+    fileData: fileData
+  })
+
+})
+
+.then(function(response) {
+
+  if (!response.ok) {
+
+    throw new Error(
+      "HTTP Error: " +
+      response.status
+    );
+
+  }
+
+  return response.json();
+
+})
+
+.then(function(response) {
+
+  console.log(
+    "Upload response:",
+    response
+  );
+
+  handleUploadSuccess(
+    response
+  );
+
+})
+
+.catch(function(error) {
+
+  console.error(
+    "Upload error:",
+    error
+  );
+
+  handleUploadError(
+    error
+  );
+
+});
     };
 
 
