@@ -2416,77 +2416,84 @@ function handleUploadError(
 
 function loadDashboard() {
 
+  const API_URL =
+    "https://script.google.com/macros/s/AKfycbzj_BEGDjdx9ES8kSrqYaIez-V-35BS1eO7seDz-VDd6WoPXoPEKn2QAh4YqYjCWqxK/exec";
 
-  google.script.run
+  fetch(API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "text/plain;charset=utf-8"
+    },
+    body: JSON.stringify({
+      action: "dashboard"
+    })
+  })
 
-    .withSuccessHandler(
-      function(response) {
+  .then(function(response) {
 
+    if (!response.ok) {
+      throw new Error(
+        "HTTP Error: " + response.status
+      );
+    }
 
-        if (
-          !response ||
-          response.success !== true
-        ) {
+    return response.json();
+  })
 
-          return;
+  .then(function(response) {
 
-        }
+    console.log(
+      "Dashboard response:",
+      response
+    );
 
+    if (
+      !response ||
+      response.success !== true
+    ) {
+      console.error(
+        "Dashboard gagal:",
+        response
+      );
+      return;
+    }
 
-        document
-          .getElementById(
-            'totalPegawai'
-          )
-          .textContent =
-          response.totalPegawai || 0;
+    document
+      .getElementById("totalPegawai")
+      .textContent =
+      response.totalPegawai || 0;
 
+    document
+      .getElementById("totalDokumen")
+      .textContent =
+      response.totalDokumen || 0;
 
-        document
-          .getElementById(
-            'totalDokumen'
-          )
-          .textContent =
-          response.totalDokumen || 0;
+    document
+      .getElementById("uploadHariIni")
+      .textContent =
+      response.uploadHariIni || 0;
 
+    document
+      .getElementById("nipUnik")
+      .textContent =
+      response.nipUnik || 0;
 
-        document
-          .getElementById(
-            'uploadHariIni'
-          )
-          .textContent =
-          response.uploadHariIni || 0;
+    renderRecent(
+      response.recent || []
+    );
 
+  })
 
-        document
-          .getElementById(
-            'nipUnik'
-          )
-          .textContent =
-          response.nipUnik || 0;
+  .catch(function(error) {
 
+    console.error(
+      "Dashboard error:",
+      error
+    );
 
-        renderRecent(
-          response.recent || []
-        );
-
-      }
-    )
-
-    .withFailureHandler(
-      function(error) {
-
-        console.error(
-          'Dashboard error:',
-          error
-        );
-
-      }
-    )
-
-    .getDashboardData();
+  });
 
 }
-
 
 
 /* =================================================
